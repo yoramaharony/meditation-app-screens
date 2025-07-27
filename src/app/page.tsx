@@ -17,6 +17,7 @@ import SelfImprovementIcon from '../components/icons/SelfImprovementIcon';
 import LockOpenRightIcon from '../components/icons/LockOpenRightIcon';
 import NotificationsIcon from '../components/icons/NotificationsIcon';
 import CreditCardIcon from '../components/icons/CreditCardIcon';
+import CreditCardOffIcon from '../components/icons/CreditCardOffIcon';
 
 const phoneScreens = [
   {
@@ -49,9 +50,10 @@ export default function PaywallPage() {
   const [selectedPlan, setSelectedPlan] = useState('yearly');
   const [carouselIndex, setCarouselIndex] = useState(0);
 
-  const plans: Record<string, { price: string; period: string }> = {
-    quarterly: { price: '$24.99', period: 'billed quarterly' },
-    yearly: { price: '$59.99', period: 'billed yearly' }
+  const plans: Record<string, { label: string; price: string; total: string; perMonth: string; savings: string }> = {
+    monthly:   { label: 'Monthly',   price: '$9.99',  total: '$9.99',  perMonth: '$9.99', savings: '–' },
+    quarterly: { label: 'Quarterly', price: '$19.99', total: '$19.99', perMonth: '$6.66', savings: '~33%' },
+    yearly:    { label: 'Yearly',    price: '$59.99', total: '$59.99', perMonth: '$5.00', savings: '~50%' }
   };
 
   const nextScreen = () => setCarouselIndex((i) => (i + 1) % phoneScreens.length);
@@ -72,56 +74,46 @@ export default function PaywallPage() {
             {/* Right Column - Price */}
             <div className="text-right">
               <p className="text-2xl font-bold">{plans[selectedPlan].price}</p>
-              <p className="text-xs text-gray-400">{plans[selectedPlan].period}</p>
+              {/* Remove the sub-caption for plan label */}
+              {selectedPlan === 'quarterly' && (
+                <p className="text-sm font-semibold text-green-400 mt-0">Save ~33% vs monthly</p>
+              )}
+              {selectedPlan === 'yearly' && (
+                <p className="text-sm font-semibold text-green-400 mt-0">Save ~50% vs monthly</p>
+              )}
             </div>
           </div>
-          
-          {/* Toggle-Style Plan Selection */}
-          <div className="relative bg-white/5 backdrop-blur-sm rounded-full p-1 mb-4 border border-white/10 shadow-lg">
-            {/* Animated background for selected option */}
-            <div 
-              className={`absolute top-1 bottom-1 rounded-full bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 transition-all duration-500 ease-out shadow-lg ${
-                selectedPlan === 'yearly' ? 'left-1 w-[calc(50%-2px)]' : 'left-[calc(50%+1px)] w-[calc(50%-2px)]'
-              }`}
-            >
-              {/* Inner glow effect */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-300/30 via-transparent to-blue-600/30 animate-pulse"></div>
-              {/* 3D highlight */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 via-transparent to-transparent"></div>
-            </div>
-            
-            {/* Toggle buttons */}
+          {/* Three-Option Toggle */}
+          <div className="relative bg-white/5 backdrop-blur-sm rounded-full p-1 mb-2 border border-white/10 shadow-lg">
             <div className="relative flex">
-              <button 
-                className={`flex-1 py-3 px-4 rounded-full transition-all duration-300 relative z-10 text-sm font-medium ${
-                  selectedPlan === 'yearly' 
-                    ? 'text-white' 
-                    : 'text-gray-400 hover:text-white'
-                }`}
-                onClick={() => setSelectedPlan('yearly')}
-              >
-                Yearly (Save 50%)
-              </button>
-              <button 
-                className={`flex-1 py-3 px-4 rounded-full transition-all duration-300 relative z-10 text-sm font-medium ${
-                  selectedPlan === 'quarterly' 
-                    ? 'text-white' 
-                    : 'text-gray-400 hover:text-white'
-                }`}
-                onClick={() => setSelectedPlan('quarterly')}
-              >
-                Quarterly
-              </button>
+              {Object.entries(plans).map(([key, plan]) => (
+                <button
+                  key={key}
+                  className={`flex-1 py-3 px-4 rounded-full transition-all duration-300 relative z-10 text-sm font-medium ${
+                    selectedPlan === key
+                      ? 'text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                  onClick={() => setSelectedPlan(key)}
+                >
+                  {plan.label}
+                </button>
+              ))}
             </div>
           </div>
           
           {/* Start Free Trial Button - Equal Height */}
-          <button className="w-full bg-gradient-to-r from-blue-400 via-blue-500 to-blue-700 text-white py-3 rounded-full font-semibold hover:from-blue-500 hover:via-blue-600 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/25 hover:scale-105 mb-3 relative overflow-hidden group">
+          <button className="w-full bg-gradient-to-r from-blue-400 via-blue-500 to-blue-700 text-white py-3 rounded-full font-bold hover:from-blue-500 hover:via-blue-600 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/25 hover:scale-105 mb-3 relative overflow-hidden group text-base">
             {/* Radiant glow effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-blue-300/20 via-transparent to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             {/* Button content */}
-            <span className="relative z-10">Start Free Trial</span>
+            <div className="flex flex-col items-center justify-center w-full">
+              <span className="relative z-10 font-bold">Start Free Trial</span>
+            </div>
           </button>
+          <div className="text-[15px] text-[#D0D9FF] font-medium text-center mt-0.5">
+            $0 is charged today!
+          </div>
           
           {/* Links at bottom of sticky header */}
           <div className="flex justify-center items-center space-x-4 text-xs text-white border-t border-white/10 pt-3">
