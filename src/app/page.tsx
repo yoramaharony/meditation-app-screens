@@ -47,7 +47,7 @@ const phoneScreens = [
 ];
 
 export default function PaywallPage() {
-  const [selectedPlan, setSelectedPlan] = useState('yearly');
+  const [selectedPlan, setSelectedPlan] = useState('quarterly');
   const [carouselIndex, setCarouselIndex] = useState(0);
 
   const plans: Record<string, { label: string; price: string; total: string; perMonth: string; savings: string }> = {
@@ -68,19 +68,13 @@ export default function PaywallPage() {
           <div className="flex justify-between items-start mb-4">
             {/* Left Column - Trial Info */}
             <div className="text-left">
-              <p className="text-base font-medium text-white">7-Day Free Trial</p>
+              <p className="text-2xl font-normal text-white">7-Day Free Trial</p>
               <p className="text-xs text-gray-400 mt-1">Cancel anytime • No commitment</p>
             </div>
             {/* Right Column - Price */}
-            <div className="text-right">
-              <p className="text-2xl font-bold">{plans[selectedPlan].price}</p>
-              {/* Remove the sub-caption for plan label */}
-              {selectedPlan === 'quarterly' && (
-                <p className="text-sm font-semibold text-green-400 mt-0">Save ~33% vs monthly</p>
-              )}
-              {selectedPlan === 'yearly' && (
-                <p className="text-sm font-semibold text-green-400 mt-0">Save ~50% vs monthly</p>
-              )}
+            <div className="flex flex-col items-center text-center">
+              <p className="text-2xl font-bold">{plans['quarterly'].price}</p>
+              <p className="text-xs font-semibold text-green-400 mt-0.5">Save ~33% vs monthly</p>
             </div>
           </div>
           {/* Three-Option Toggle */}
@@ -103,12 +97,12 @@ export default function PaywallPage() {
           </div>
           
           {/* Start Free Trial Button - Equal Height */}
-          <button className="w-full bg-gradient-to-r from-blue-400 via-blue-500 to-blue-700 text-white py-3 rounded-full font-bold hover:from-blue-500 hover:via-blue-600 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/25 hover:scale-105 mb-3 relative overflow-hidden group text-base">
+          <button className="w-full bg-gradient-to-r from-blue-400 via-blue-500 to-blue-700 text-white py-3 rounded-full hover:from-blue-500 hover:via-blue-600 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/25 hover:scale-105 mb-3 relative overflow-hidden group text-base">
             {/* Radiant glow effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-blue-300/20 via-transparent to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             {/* Button content */}
             <div className="flex flex-col items-center justify-center w-full">
-              <span className="relative z-10 font-bold">Start Free Trial</span>
+              <span className="relative z-10 font-normal text-xl">Start Free Trial</span>
             </div>
           </button>
           <div className="text-[15px] text-[#D0D9FF] font-medium text-center mt-0.5">
@@ -116,7 +110,7 @@ export default function PaywallPage() {
           </div>
           
           {/* Links at bottom of sticky header */}
-          <div className="flex justify-center items-center space-x-4 text-xs text-white border-t border-white/10 pt-3">
+          <div className="flex justify-center items-center space-x-1 text-xs text-white border-t border-white/10 pt-3">
             <Link href="/terms" className="hover:text-gray-300 transition-colors underline">Terms of Use</Link>
             <span className="text-white">•</span>
             <Link href="/privacy" className="hover:text-gray-300 transition-colors underline">Privacy Policy</Link>
@@ -147,19 +141,19 @@ export default function PaywallPage() {
               {/* Glassy Play Button Overlay */}
               <div className="absolute inset-0 flex items-center justify-center">
                 {/* Glassy play button with backdrop blur */}
-                <div className="relative w-16 h-16 bg-white/5 backdrop-blur-sm rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all duration-300 border border-white/10">
+                <div className="relative w-24 h-24 bg-white/5 backdrop-blur-sm rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all duration-300 border-2 border-white/10">
                   {/* Inner glow ring */}
                   <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400/20 via-blue-500/15 to-blue-600/20 animate-pulse"></div>
                   {/* Play button background */}
-                  <div className="relative w-10 h-10 bg-gradient-to-br from-blue-400/50 via-blue-500/50 to-blue-700/50 rounded-full flex items-center justify-center shadow-lg">
+                  <div className="relative w-16 h-16 bg-gradient-to-br from-blue-400/50 via-blue-500/50 to-blue-700/50 rounded-full flex items-center justify-center shadow-lg">
                     {/* Play icon */}
-                    <svg className="w-6 h-6 text-white/90 ml-0.5 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-10 h-10 text-white/90 ml-0.5 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M8 5v14l11-7z"></path>
                     </svg>
                   </div>
                   {/* Outer radiating rings */}
-                  <div className="absolute inset-0 rounded-full border-2 border-blue-400/20 animate-ping"></div>
-                  <div className="absolute inset-0 rounded-full border border-blue-300/15 animate-pulse"></div>
+                  <div className="absolute inset-0 rounded-full border-4 border-blue-400/20 animate-ping"></div>
+                  <div className="absolute inset-0 rounded-full border-2 border-blue-300/15 animate-pulse"></div>
                 </div>
               </div>
             </div>
