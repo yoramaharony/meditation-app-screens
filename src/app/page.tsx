@@ -73,8 +73,16 @@ export default function PaywallPage() {
             </div>
             {/* Right Column - Price */}
             <div className="flex flex-col items-center text-center">
-              <p className="text-2xl font-bold">{plans['quarterly'].price}</p>
-              <p className="text-xs font-semibold text-green-400 mt-0.5">Save ~33% vs monthly</p>
+              <p className="text-2xl font-bold">{plans[selectedPlan].price}</p>
+              <div className="w-56 min-h-[20px] flex items-center justify-center">
+                {selectedPlan === 'monthly' ? (
+                  <p className="text-xs font-medium text-white mt-0.5">Switch anytime, no commitment</p>
+                ) : (
+                  <p className="text-xs font-semibold text-green-400 mt-0.5">
+                    Save {plans[selectedPlan].savings} vs monthly
+                  </p>
+                )}
+              </div>
             </div>
           </div>
           {/* Three-Option Toggle */}
