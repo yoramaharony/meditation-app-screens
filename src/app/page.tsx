@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import emojiFoodBeverage from '../../public/icons/emoji_food_beverage.svg';
@@ -49,6 +49,9 @@ const phoneScreens = [
 export default function PaywallPage() {
   const [selectedPlan, setSelectedPlan] = useState('quarterly');
   const [carouselIndex, setCarouselIndex] = useState(0);
+  const [isFading, setIsFading] = useState(false);
+  const touchStartXRef = useRef<number | null>(null);
+  const touchMoveXRef = useRef<number | null>(null);
 
   const plans: Record<string, { label: string; price: string; total: string; perMonth: string; savings: string }> = {
     monthly:   { label: 'Monthly',   price: '$9.99',  total: '$9.99',  perMonth: '$9.99', savings: '–' },
@@ -400,14 +403,39 @@ export default function PaywallPage() {
               >
                 <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </button>
-              <div className="flex-shrink-0 text-center">
+              <div 
+                className="flex-shrink-0 text-center select-none"
+                onTouchStart={(e) => { touchStartXRef.current = e.touches[0].clientX; }}
+                onTouchMove={(e) => { touchMoveXRef.current = e.touches[0].clientX; }}
+                onTouchEnd={() => {
+                  if (touchStartXRef.current !== null && touchMoveXRef.current !== null) {
+                    const dx = touchMoveXRef.current - touchStartXRef.current;
+                    if (dx > 40) {
+                      setIsFading(true);
+                      setTimeout(() => {
+                        nextScreen();
+                        setIsFading(false);
+                      }, 200);
+                    }
+                    if (dx < -40) {
+                      setIsFading(true);
+                      setTimeout(() => {
+                        prevScreen();
+                        setIsFading(false);
+                      }, 200);
+                    }
+                  }
+                  touchStartXRef.current = null;
+                  touchMoveXRef.current = null;
+                }}
+              >
                 <Image
                   src={phoneScreens[carouselIndex].src}
                   alt={phoneScreens[carouselIndex].title}
-                  width={200}
-                  height={410}
-                  className="rounded-2xl shadow-lg mb-2 mx-auto"
-                  style={{ maxHeight: 410, objectFit: 'contain' }}
+                  width={240}
+                  height={480}
+                  className={`rounded-2xl shadow-lg mb-2 mx-auto transition-opacity duration-200 ${isFading ? 'opacity-0' : 'opacity-100'}`}
+                  style={{ maxHeight: 480, objectFit: 'contain' }}
                 />
                 <p className="text-xs text-gray-400 mt-2 font-semibold">{phoneScreens[carouselIndex].title}</p>
               </div>
