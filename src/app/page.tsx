@@ -68,15 +68,21 @@ export default function PaywallPage() {
           <div className="flex justify-between items-start mb-4">
             {/* Left Column - Trial Info */}
             <div className="text-left">
-              <p className="text-2xl font-normal text-white">7-Day Free Trial</p>
-              <p className="text-xs text-gray-400 mt-1">Cancel anytime • No commitment</p>
+              <p className="text-2xl font-normal text-white whitespace-nowrap">7-Day Free Trial</p>
+              <span className="text-xs text-gray-400 mt-1 block text-left">
+                <span className="flex items-center"><span className="mr-1 text-[10px] align-middle">•</span>Cancel anytime</span>
+                <span className="flex items-center"><span className="mr-1 text-[10px] align-middle">•</span>No Commitment</span>
+              </span>
             </div>
             {/* Right Column - Price */}
             <div className="flex flex-col items-center text-center">
               <p className="text-2xl font-bold">{plans[selectedPlan].price}</p>
               <div className="w-56 min-h-[20px] flex items-center justify-center">
                 {selectedPlan === 'monthly' ? (
-                  <p className="text-xs font-medium text-white mt-0.5">Switch anytime, no commitment</p>
+                  <span className="text-xs font-normal text-gray-400 mt-0.5 block text-left">
+                    <span className="flex items-center"><span className="mr-1 text-[10px] align-middle">•</span>Switch Anytime</span>
+                    <span className="flex items-center"><span className="mr-1 text-[10px] align-middle">•</span>No Commitment</span>
+                  </span>
                 ) : (
                   <p className="text-xs font-semibold text-green-400 mt-0.5">
                     Save {plans[selectedPlan].savings} vs monthly
